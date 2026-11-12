@@ -75,7 +75,7 @@ class UpdateLogicTest {
         assertNull(UpdateLogic.tagFromLocation("https://github.com/YegorkaPomidorka/headswap/releases"))
         assertNull(UpdateLogic.tagFromLocation(null))
         assertEquals(
-            "https://github.com/YegorkaPomidorka/headswap/releases/download/v1.1.11/headswap-1.1.11.apk",
+            "https://github.com/TNTfish/headswap/releases/download/v1.1.11/headswap-1.1.11.apk",
             UpdateLogic.assetUrl("v1.1.11", "1.1.11"),
         )
     }

@@ -2,7 +2,7 @@
 
 让支持 **百度 CarLife** 的车机使用手机上的 **Android Auto**，无需额外转换盒。
 
-[上游项目](https://github.com/YegorkaPomidorka/headswap) · [上游 APK 下载](https://github.com/YegorkaPomidorka/headswap/releases) · [原版说明（俄语，含英文简介）](README.ru.md)
+[本 Fork APK 下载](https://github.com/TNTfish/headswap/releases) · [上游项目](https://github.com/YegorkaPomidorka/headswap) · [上游 APK 下载](https://github.com/YegorkaPomidorka/headswap/releases) · [原版说明（俄语，含英文简介）](README.ru.md)
 
 ![Headswap 在本田缤智原厂车机上运行 Android Auto](docs/screenshot.jpg)
 
@@ -14,7 +14,7 @@
 - 保留上游已有的简体中文界面，包括首次引导、设置、桌面、连接状态与诊断页面。
 - 修复 Android 10–12 手动选择“简体中文”后，桌面未按中文模式选择应用的问题。中文模式沿用上游的国际应用方案，例如 Google 地图和 Waze。
 
-**上游已经支持简体中文。** 如果只是想使用中文界面，可直接安装上游发布的 APK，再进入 **设置 → 语言 → 简体中文**。本 Fork 尚未发布独立 APK；下面的下载链接均指向上游，因此不包含本 Fork 的额外修复。
+**上游已经支持简体中文。** 如果只是想使用中文界面，可直接安装上游发布的 APK，再进入 **设置 → 语言 → 简体中文**。本 Fork 的 4.2.0 中文支持版可从[本仓库 Releases](https://github.com/TNTfish/headswap/releases)下载，包含下述语言修复。它使用独立签名，已安装上游 APK 时需要先卸载原版，卸载会清除应用设置。
 
 ## 工作原理
 
@@ -35,7 +35,7 @@ Headswap 在手机上连接 Android Auto 的“车机服务器”，再把画面
 
 ## 安装与首次连接
 
-1. 从[上游 GitHub Releases](https://github.com/YegorkaPomidorka/headswap/releases) 下载 APK 并安装，也可访问[上游网站](https://yegorkapomidorka.com/headswap/)。
+1. 从[本 Fork GitHub Releases](https://github.com/TNTfish/headswap/releases)下载中文支持版 APK 并安装。若需要上游原版，请访问[上游 Releases](https://github.com/YegorkaPomidorka/headswap/releases)或[上游网站](https://yegorkapomidorka.com/headswap/)。
 2. 打开 Headswap，在 **设置 → 语言 → 简体中文** 中选择中文。默认选项为“跟随系统”。
 3. 按首次引导选择 **Android Auto** 模式，并授予通知、麦克风等需要的权限。
 4. 打开 Android Auto 设置，滑动到底部，连续点按“版本”10 次，确认开启开发者模式。
@@ -71,7 +71,7 @@ Android Auto 模式显示的是 Android Auto 支持的应用，并非完整手�
 
 ### 如何更新
 
-上游 APK 支持从上游 GitHub Releases 检查更新。本 Fork 当前仍使用上游更新地址。自行编译的 APK 若使用不同签名，不能直接覆盖上游 APK；切换前请保存需要的设置。自行维护构建时，可在 **设置 → 更新** 中关闭自动检查，以免误将上游版本当作本 Fork 的更新。
+本 Fork 从 TNTfish/headswap 的 GitHub Releases 检查更新，与上游原版分开维护。后续 Fork 安装包需使用相同签名并递增版本，才能覆盖安装、保留设置。切换到上游或其他签名的版本时，需要先卸载现有应用，设置会被清除。
 
 ## 从源码编译
 
@@ -106,7 +106,7 @@ android/app/src/main/assets/aa/hur/cert.pem
 android/app/src/main/assets/aa/hur/key.pem
 ```
 
-上游列出的公开参考来自 [opencardev/aasdk](https://github.com/opencardev/aasdk) 和 [headunit-revived](https://github.com/andreknieriem/headunit-revived)。release 构建会检查上述两组文件，并从用户目录下的 `.android-keys/headswap-release.properties` 读取签名配置（`storeFile`、`storePassword`、`keyAlias`、`keyPassword`）。不要将个人签名密钥或密码提交到仓库。
+上游列出的公开参考来自 [opencardev/aasdk](https://github.com/opencardev/aasdk) 和 [headunit-revived](https://github.com/andreknieriem/headunit-revived)。release 构建会检查上述两组文件，并从用户目录下的 `.android-keys/headswap-release.properties` 读取签名配置（`storeFile`、`storePassword`、`keyAlias`、`keyPassword`）；也可通过 `HEADSWAP_RELEASE_PROPERTIES` 环境变量指定该配置文件。不要将个人签名密钥或密码提交到仓库。
 
 ## 中文翻译与维护
 

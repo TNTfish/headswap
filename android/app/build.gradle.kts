@@ -7,7 +7,9 @@ plugins {
 
 // Release key lives outside the project: %USERPROFILE%\.android-keys\headswap-release.properties
 val releaseProps = Properties().apply {
-    val f = file("${System.getProperty("user.home")}/.android-keys/headswap-release.properties")
+    val path = System.getenv("HEADSWAP_RELEASE_PROPERTIES")
+        ?: "${System.getProperty("user.home")}/.android-keys/headswap-release.properties"
+    val f = file(path)
     if (f.exists()) f.inputStream().use { load(it) }
 }
 

@@ -46,15 +46,19 @@ object AppLocale {
     /** Языки, при которых лаунчер прячет русские сервисы: навигаторы Google Карты и Waze, без Я.Музыки (h1003). */
     private val GLOBAL_APPS_LANGS = setOf("ar", "fr", "zh")
 
+    /** Match both base languages and regional tags saved by the language picker (e.g. zh-CN). */
+    internal fun usesGlobalAppsForLanguage(tag: String?): Boolean =
+        tag?.let { Locale.forLanguageTag(it).language } in GLOBAL_APPS_LANGS
+
     /**
      * Интерфейс на языке из [GLOBAL_APPS_LANGS] (выбран явно или «Системный» при такой системе). Без IPC: на 33+
      * per-app язык уже в конфигурации контекста, ниже - выбор из prefs или язык системы.
      */
     fun usesGlobalApps(ctx: Context): Boolean {
-        if (Build.VERSION.SDK_INT >= 33) return ctx.resources.configuration.locales[0]?.language in GLOBAL_APPS_LANGS
+        if (Build.VERSION.SDK_INT >= 33) return usesGlobalAppsForLanguage(ctx.resources.configuration.locales[0]?.toLanguageTag())
         val t = stored(ctx)
         val lang = if (t == SYSTEM) android.content.res.Resources.getSystem().configuration.locales[0]?.language else t
-        return lang in GLOBAL_APPS_LANGS
+        return usesGlobalAppsForLanguage(lang)
     }
 
     /** Нужен ли ручной recreate() после [set]. */

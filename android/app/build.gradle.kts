@@ -18,7 +18,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.yegorkapomidorka.headswap"
+        applicationId = "io.github.tntfish.headswap"
         minSdk = 29
         targetSdk = 37
         versionCode = 74

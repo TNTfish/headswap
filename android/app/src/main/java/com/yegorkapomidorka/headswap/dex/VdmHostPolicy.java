@@ -4,7 +4,7 @@ package com.yegorkapomidorka.headswap.dex;
 public final class VdmHostPolicy {
     public static final int MIN_SDK = 37;
     public static final String ENTRY = ManualAccessPolicy.DEX_CLASS_PACKAGE + ".VdmHostMain";
-    public static final String LOG = "/data/local/tmp/headswap-vdm-host.log";
+    public static final String LOG = "/data/local/tmp/headswap-zh-vdm-host.log";
 
     private VdmHostPolicy() { }
 

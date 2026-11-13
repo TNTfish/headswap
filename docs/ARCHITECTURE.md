@@ -37,6 +37,14 @@
 
 ## Пакеты
 
+Chinese fork coexistence (ADR 0041): installed applicationId is `io.github.tntfish.headswap`, while
+the code/resource namespace stays `com.yegorkapomidorka.headswap`. Instrumentation targets, provider
+authorities, desktop task affinity and activation commands use the installed applicationId; class
+names retain the code namespace. Each install has its own settings, UID and Shizuku authorization.
+The fork requests but does not declare `android.car.permission.TEMPLATE_RENDERER`: upstream can own
+the normal permission without a duplicate-declaration install failure. Without an owner, restrictive
+Car App hosts can fall back to ordinary app windows (ADR 0022).
+
 Chinese fork desktop activation (ADR 0040): `dex/ShizukuActivation` coordinates explicit authorization and
 bounded UserService binding. `ShizukuActivationService` runs as real shell UID 2000 and exposes only the
 existing activation/log/VDM-restart operations through `IShizukuActivation`; it accepts only its own app UID.

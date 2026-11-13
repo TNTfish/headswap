@@ -22,6 +22,8 @@ class ShizukuActivationService(context: Context) : IShizukuActivation.Stub() {
         // Validate everything before running even the preflight. Never log this command or token.
         val command = PhoneActivationPolicy.dispatchCommand(apk, options, nonce)
         if (!installedCopy() || execute(PhoneActivationPolicy.PREFLIGHT).exitCode != 0) return false
+        // Recheck immediately before dispatch: another app can activate after the UI preflight.
+        if (conflictingActivation().isNotEmpty()) return false
         val result = execute(command)
         return PhoneActivationPolicy.dispatchAccepted(result.exitCode, result.output, nonce)
     }
@@ -37,6 +39,14 @@ class ShizukuActivationService(context: Context) : IShizukuActivation.Stub() {
         val appPid = Binder.getCallingPid()
         if (!installedCopy()) return false
         return execute(VdmHostPolicy.startCommand(apk, packageName, appPid)).exitCode == 0
+    }
+
+    override fun conflictingActivation(): String {
+        requireCaller()
+        val result = execute(ShizukuActivationPolicy.ACTIVE_INSTRUMENTATIONS_COMMAND)
+        // grep returns 1 when there is no active instrumentation header.
+        check(result.exitCode == 0 || result.exitCode == 1) { "Cannot inspect desktop activation" }
+        return ShizukuActivationPolicy.conflictingActivation(result.output, packageName)
     }
 
     // The Shizuku server itself invokes this transaction when removing the UserService.

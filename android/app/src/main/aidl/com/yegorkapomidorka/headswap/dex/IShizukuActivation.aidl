@@ -5,5 +5,6 @@ interface IShizukuActivation {
     boolean activate(String token, boolean audio, String nonce) = 0;
     String readActivationLog(String nonce) = 1;
     boolean restartHost() = 2;
+    String conflictingActivation() = 3;
     void destroy() = 16777114;
 }

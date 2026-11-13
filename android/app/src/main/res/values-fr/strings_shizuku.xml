@@ -9,4 +9,5 @@
     <string name="shizuku_adb_required">Démarrez Shizuku via le débogage sans fil ou un ordinateur (mode ADB). Le mode Root n’est pas encore pris en charge.</string>
     <string name="shizuku_android_required">L’activation du bureau nécessite Android 13 ou ultérieur.</string>
     <string name="shizuku_activation_failed">L’activation du bureau n’a pas été confirmée. Vérifiez que Shizuku fonctionne et dispose de l’autorisation, puis réessayez ou utilisez le débogage sans fil.</string>
+    <string name="shizuku_activation_conflict">Une autre activation du bureau est en cours (%1$s). Forcez son arrêt dans les paramètres système, puis réessayez. Une seule version peut rester activée à la fois.</string>
 </resources>

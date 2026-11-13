@@ -65,3 +65,4 @@
 | 0033 | [На Android 17 экран рабочего стола держит shell-хост VirtualDevice; требуется отладка по USB](0033-android17-vdm-shell-host.md) | принято |
 | 0037 | [Шайба ГУ во встроенное окно на всю область идёт стрелками DPAD](0037-knob-into-windowed-apps.md) | принято |
 | 0041 | [中文 Fork 使用独立包名与青蓝色图标](0041-fork-coexistence.md) | 采用 |
+| 0042 | [Shizuku 激活前检查其他版本的桌面占用](0042-desktop-activation-conflict.md) | 采用 |

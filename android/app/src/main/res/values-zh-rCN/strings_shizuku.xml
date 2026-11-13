@@ -9,4 +9,5 @@
     <string name="shizuku_adb_required">请通过无线调试或电脑启动 Shizuku（ADB 模式）。当前暂不支持 Root 模式。</string>
     <string name="shizuku_android_required">桌面模式激活需要 Android 13 或更高版本。</string>
     <string name="shizuku_activation_failed">尚未确认桌面激活成功。请检查 Shizuku 是否运行并已授权，重试或改用无线调试。</string>
+    <string name="shizuku_activation_conflict">另一个应用正在保持桌面激活（%1$s）。请到系统“应用信息”中强行停止该应用，再重试。两个版本可共存安装，但同一时间只能激活一个。</string>
 </resources>

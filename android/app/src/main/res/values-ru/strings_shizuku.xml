@@ -9,4 +9,5 @@
     <string name="shizuku_adb_required">Запустите Shizuku через беспроводную отладку или компьютер (режим ADB). Режим Root пока не поддерживается.</string>
     <string name="shizuku_android_required">Для активации рабочего стола нужен Android 13 или новее.</string>
     <string name="shizuku_activation_failed">Shizuku не подтвердил активацию. Проверьте, что Shizuku запущен и доступ разрешён, затем повторите попытку или используйте беспроводную отладку.</string>
+    <string name="shizuku_activation_conflict">Доступ рабочего стола уже занят приложением %1$s. Принудительно остановите его в настройках системы и повторите. Одновременно активной может быть только одна версия.</string>
 </resources>

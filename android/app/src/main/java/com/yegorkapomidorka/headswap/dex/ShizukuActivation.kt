@@ -99,6 +99,7 @@ object ShizukuActivation {
     }
 
     @Volatile private var worker: Thread? = null
+    private class ActivationConflict(val packageName: String) : Exception()
 
     private fun launch(ctx: Context) {
         PhoneActivation.status = PhoneActivation.Status(PhoneActivation.Step.STARTING)
@@ -109,6 +110,8 @@ object ShizukuActivation {
                 try {
                     withService(ctx) { service ->
                         if (cancelled) return@withService
+                        val conflict = service.conflictingActivation()
+                        if (conflict.isNotEmpty()) throw ActivationConflict(conflict)
                         val nonce = PhoneActivationPolicy.newNonce()
                         val options = ActivationToken(ctx).options(DexPrefs(ctx).usbPlaybackAudio)
                         state.begin(nonce, PhoneActivationState.BACKEND_SHIZUKU)
@@ -135,6 +138,9 @@ object ShizukuActivation {
                     readFailure(ctx, state)
                     fail(ctx, R.string.shizuku_activation_failed, state.failure)
                 }
+            } catch (e: ActivationConflict) {
+                if (!cancelled) fail(ctx, R.string.shizuku_activation_conflict,
+                    ctx.getString(R.string.shizuku_activation_conflict, e.packageName))
             } catch (e: Exception) {
                 // Binder death after dispatch can be the expected process replacement. Keep its durable nonce.
                 AppLog.i("SHIZUKU activation ${e.javaClass.simpleName} dispatched=$dispatched")

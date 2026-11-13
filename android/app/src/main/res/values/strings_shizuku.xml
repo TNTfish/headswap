@@ -9,4 +9,5 @@
     <string name="shizuku_adb_required">Start Shizuku using wireless debugging or a computer (ADB mode). Root mode is not supported yet.</string>
     <string name="shizuku_android_required">Desktop activation requires Android 13 or later.</string>
     <string name="shizuku_activation_failed">Shizuku could not confirm desktop activation. Check that Shizuku is running and authorized, then retry or use wireless debugging.</string>
+    <string name="shizuku_activation_conflict">Another desktop activation is running (%1$s). In system App info, force stop that app, then retry. Only one version can hold desktop activation at a time.</string>
 </resources>

@@ -9,4 +9,5 @@
     <string name="shizuku_adb_required">شغّل Shizuku عبر تصحيح الأخطاء اللاسلكي أو الكمبيوتر (وضع ADB). وضع Root غير مدعوم حاليًا.</string>
     <string name="shizuku_android_required">يتطلب تفعيل سطح المكتب Android 13 أو أحدث.</string>
     <string name="shizuku_activation_failed">لم يتم تأكيد تفعيل سطح المكتب. تأكد من تشغيل Shizuku ومنح الإذن، ثم حاول مجددًا أو استخدم تصحيح الأخطاء اللاسلكي.</string>
+    <string name="shizuku_activation_conflict">تفعيل سطح المكتب مستخدم في تطبيق آخر (%1$s). أوقف ذلك التطبيق إجباريًا من إعدادات النظام ثم أعد المحاولة. يمكن تفعيل نسخة واحدة فقط في الوقت نفسه.</string>
 </resources>

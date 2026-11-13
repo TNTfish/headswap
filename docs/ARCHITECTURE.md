@@ -52,6 +52,8 @@ existing activation/log/VDM-restart operations through `IShizukuActivation`; it 
 `PhoneActivationPolicy`/`PhoneActivationLauncher` and the same token-checked instrumentation. Readiness is
 always `DelegatedDesktopAccess`, never a Shizuku acknowledgment. `VdmHostRestart` routes recovery through the
 recorded backend. UI strings are in all five locales; the provider authority uses the runtime applicationId.
+Before dispatch, the restricted helper inspects active instrumentation component headers (ADR 0042).
+Another package blocks activation with a localized message before the app is restarted; no other app is stopped.
 
 | Где | Что |
 |---|---|

@@ -88,10 +88,10 @@ public final class ManualAccessPolicyTest {
 
     @Test public void openAppTargetsTheInstalledPackageLauncher() {
         List<String> args = ManualAccessPolicy.openAppArguments(APP + ".smoke");
-        assertEquals("-p", args.get(args.size() - 2));
-        assertEquals(APP + ".smoke", args.get(args.size() - 1));
+        assertEquals("-n", args.get(args.size() - 2));
+        assertEquals(APP + ".smoke/com.yegorkapomidorka.headswap.MainActivity", args.get(args.size() - 1));
         assertTrue(args.contains("android.intent.category.LAUNCHER"));
-        assertFalse(args.contains("-n")); // No hardcoded activity class.
+        assertFalse(args.contains("-p"));
     }
 
     @Test public void generatedTokensAreRandom128BitHex() {

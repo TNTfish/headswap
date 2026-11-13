@@ -19,6 +19,9 @@ class PhoneActivationState(context: Context) {
         get() = prefs.getInt("connect_port", 0)
         set(value) { prefs.edit().putInt("connect_port", value).commit() }
 
+    /** The backend of the last dispatch, also used for failure collection and Android 17 host recovery. */
+    val backend: String get() = prefs.getString("backend", BACKEND_ADB) ?: BACKEND_ADB
+
     val nonce: String? get() = prefs.getString("nonce", null)?.takeIf(PhoneActivationPolicy::isValidNonce)
     val startedMs: Long get() = prefs.getLong("started", 0)
 
@@ -33,8 +36,11 @@ class PhoneActivationState(context: Context) {
         set(value) { prefs.edit().putBoolean("failure_checked", value).apply() }
 
     // commit(): the process is replaced right after the dispatch.
-    fun begin(nonce: String) {
+    fun begin(nonce: String, backend: String = BACKEND_ADB) {
+        require(PhoneActivationPolicy.isValidNonce(nonce))
+        require(backend == BACKEND_ADB || backend == BACKEND_SHIZUKU)
         check(prefs.edit().putString("nonce", nonce).putLong("started", System.currentTimeMillis())
+            .putString("backend", backend)
             .putBoolean("failure_checked", false).remove("failure").commit()) { "Не удалось сохранить состояние активации" }
     }
 
@@ -44,4 +50,9 @@ class PhoneActivationState(context: Context) {
 
     fun progress(accessReady: Boolean, nowMs: Long = System.currentTimeMillis()): PhoneActivationPolicy.Progress =
         PhoneActivationPolicy.progress(if (nonce == null) 0 else startedMs, nowMs, accessReady)
+
+    companion object {
+        const val BACKEND_ADB = "adb"
+        const val BACKEND_SHIZUKU = "shizuku"
+    }
 }

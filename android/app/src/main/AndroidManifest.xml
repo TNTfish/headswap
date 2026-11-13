@@ -125,6 +125,15 @@
         android:enableOnBackInvokedCallback="false"
         android:theme="@style/Theme.Headswap">
 
+        <!-- Receives the Shizuku binder; the manager protects access with its runtime authorization. -->
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:multiprocess="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

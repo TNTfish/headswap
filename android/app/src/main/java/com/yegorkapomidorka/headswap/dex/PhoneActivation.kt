@@ -5,7 +5,7 @@ import android.content.Intent
 
 /** What the settings screen sees and asks of the on-phone activation (the work itself is [PhoneActivationService]). */
 object PhoneActivation {
-    enum class Step { IDLE, SEARCHING, WAIT_CODE, PAIRING, CONNECTING, STARTING, FAILED }
+    enum class Step { IDLE, SEARCHING, WAIT_CODE, PAIRING, CONNECTING, STARTING, SHIZUKU_PERMISSION, FAILED }
 
     /** [detail] is the launcher's own failure line when the phone reported one. */
     class Status(val step: Step, val reason: AdbReason? = null, val detail: String? = null)
@@ -18,7 +18,7 @@ object PhoneActivation {
 
     /** Manual values are optional: ports from the two wireless-debugging screens and the code from the pairing dialog. */
     fun start(context: Context, pairPort: Int = 0, code: String? = null, connectPort: Int = 0) {
-        if (busy) return
+        if (busy || ShizukuActivation.active) return
         context.startForegroundService(PhoneActivationService.intent(context, PhoneActivationService.ACTION_START)
             .putExtra(PhoneActivationService.EXTRA_PAIR_PORT, pairPort)
             .putExtra(PhoneActivationService.EXTRA_CODE, code)
@@ -27,12 +27,17 @@ object PhoneActivation {
 
     fun cancel(context: Context) {
         if (!busy) return
+        if (ShizukuActivation.active) { ShizukuActivation.cancel(); return }
         context.startService(PhoneActivationService.intent(context, PhoneActivationService.ACTION_CANCEL))
     }
 
     /** An expired attempt: ask the phone's launcher log why. Needs the saved key and wireless debugging. */
     fun collectFailure(context: Context) {
         if (busy) return
+        if (PhoneActivationState(context).backend == PhoneActivationState.BACKEND_SHIZUKU) {
+            ShizukuActivation.collectFailure(context)
+            return
+        }
         context.startForegroundService(PhoneActivationService.intent(context, PhoneActivationService.ACTION_COLLECT))
     }
 

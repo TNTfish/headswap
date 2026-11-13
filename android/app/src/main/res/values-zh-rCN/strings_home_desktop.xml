@@ -15,8 +15,8 @@
     <string name="home_desk_title_activate">激活 Headswap</string>
     <string name="home_desk_title_error">桌面未能启动</string>
 
-    <string name="home_desk_sub_activate">需要通过“无线调试”进行一次性激活。</string>
-    <string name="home_desk_sub_activate_paired">手机重启后激活会失效。请通过“无线调试”重新激活，只需半分钟。</string>
+    <string name="home_desk_sub_activate">通过 Shizuku 或无线调试激活桌面即可使用。</string>
+    <string name="home_desk_sub_activate_paired">手机重启后需重新激活，可使用 Shizuku 或无线调试。</string>
     <string name="home_desk_sub_ok">%1$s 已显示在车机屏幕上，可以收起手机了。</string>
     <string name="home_desk_sub_starting">正在启动桌面。</string>
 

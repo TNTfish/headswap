@@ -15,8 +15,8 @@
     <string name="home_desk_title_activate">Activer Headswap</string>
     <string name="home_desk_title_error">L\'écran d\'accueil n\'a pas démarré</string>
 
-    <string name="home_desk_sub_activate">Une activation unique via « Débogage sans fil » est nécessaire.</string>
-    <string name="home_desk_sub_activate_paired">L\'activation est perdue après un redémarrage du téléphone. Refaites-la via « Débogage sans fil » : une demi-minute.</string>
+    <string name="home_desk_sub_activate">Activez le bureau avec Shizuku ou le débogage sans fil.</string>
+    <string name="home_desk_sub_activate_paired">Après un redémarrage du téléphone, réactivez le bureau avec Shizuku ou le débogage sans fil.</string>
     <string name="home_desk_sub_ok">%1$s sur l\'écran de la voiture. Vous pouvez ranger le téléphone.</string>
     <string name="home_desk_sub_starting">Démarrage de l\'écran d\'accueil.</string>
 

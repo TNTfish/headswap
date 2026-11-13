@@ -362,6 +362,7 @@ class PhoneActivationService : Service() {
             val state = PhoneActivationState(context)
             if (state.nonce == null) return
             state.clear()
+            if (state.backend == PhoneActivationState.BACKEND_SHIZUKU) return
             val manager = context.getSystemService(NotificationManager::class.java)
             manager.cancel(ID_PROGRESS)
             manager.cancel(ID_CODE)

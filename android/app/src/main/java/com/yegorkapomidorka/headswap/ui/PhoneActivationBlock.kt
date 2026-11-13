@@ -19,6 +19,7 @@ import com.yegorkapomidorka.headswap.dex.DelegatedDesktopAccess
 import com.yegorkapomidorka.headswap.dex.PhoneActivation
 import com.yegorkapomidorka.headswap.dex.PhoneActivationPolicy
 import com.yegorkapomidorka.headswap.dex.PhoneActivationState
+import com.yegorkapomidorka.headswap.dex.ShizukuActivation
 import com.yegorkapomidorka.headswap.dex.VdmDesktop
 
 /**
@@ -47,6 +48,8 @@ class PhoneActivationBlock(
     private val steps: LinearLayout
     private var stepsPaired: Boolean? = null
     private val activate: LinearLayout
+    private val shizuku: LinearLayout
+    private val shizukuHint: View
     private val cancel: LinearLayout
     private val manualToggle: LinearLayout
     private val manualBox: LinearLayout
@@ -69,6 +72,12 @@ class PhoneActivationBlock(
         title = c.text(c.getString(R.string.pa_title), 24f, 600).apply { letterSpacing = -0.01f; lineHeight = c.dp(30) }
         if (!embedded) view.addView(title, lp(MATCH, WRAP).margins(c, 8, 12, 8, 0))
         status = c.text("", 16f, 600).also { view.addView(it, lp(WRAP, WRAP).margins(c, if (embedded) 0 else 8, 0, 8, 8)) }
+        shizuku = c.tonalButton(c.getString(R.string.shizuku_activate)).apply {
+            setOnClickListener { activateShizuku() }
+        }
+        view.addView(shizuku, c.lpDp(MATCH, 56))
+        shizukuHint = c.stepHint(c.getString(R.string.shizuku_hint))
+        view.addView(shizukuHint, lp(MATCH, WRAP))
         view.addView(c.stepMockCard(Mocks.developerOptions(c), compact = true), lp(MATCH, WRAP))
         steps = c.vbox().also { view.addView(it, lp(MATCH, WRAP).margins(c, 0, if (embedded) 18 else 10, 0, 0)) }
         view.addView(c.stepHint(c.getString(hintRes)), lp(MATCH, WRAP))
@@ -132,6 +141,9 @@ class PhoneActivationBlock(
         activateLabel = c.getString(if (paired || access == DelegatedDesktopAccess.Status.READY) R.string.pa_button_again else R.string.pa_button)
         (activate.getChildAt(0) as TextView).text = activateLabel
         activate.visibility = if (busy || embedded) View.GONE else View.VISIBLE
+        val showShizuku = Build.VERSION.SDK_INT >= 33 && !busy && !ready
+        shizuku.visibility = if (showShizuku) View.VISIBLE else View.GONE
+        shizukuHint.visibility = if (showShizuku) View.VISIBLE else View.GONE
         cancel.visibility = if (busy && !embedded) View.VISIBLE else View.GONE
         manualToggle.visibility = if (busy || embedded) View.GONE else View.VISIBLE
         if (busy) manualBox.visibility = View.GONE
@@ -172,6 +184,7 @@ class PhoneActivationBlock(
         PhoneActivation.Step.PAIRING -> R.string.pa_s_pairing
         PhoneActivation.Step.CONNECTING -> R.string.pa_s_connecting
         PhoneActivation.Step.STARTING -> R.string.pa_s_starting
+        PhoneActivation.Step.SHIZUKU_PERMISSION -> R.string.shizuku_wait_permission
         else -> R.string.pa_s_searching
     }
 
@@ -186,7 +199,16 @@ class PhoneActivationBlock(
     }
 
     /** Кнопки шага онбординга: те же действия, что у кнопок блока. */
-    fun activateNow() = onActivate()
+    fun activateNow(preferPreviousBackend: Boolean = false) {
+        if (preferPreviousBackend && ShizukuActivation.preferred(c)) activateShizuku() else onActivate()
+    }
+
+    private fun activateShizuku() {
+        ShizukuActivation.start(c)
+        refresh()
+        if (!view.isAttachedToWindow && PhoneActivation.status.step == PhoneActivation.Step.FAILED)
+            Toast.makeText(c, PhoneActivation.status.detail, Toast.LENGTH_LONG).show()
+    }
 
     fun cancelNow() = PhoneActivation.cancel(c)
 

@@ -115,8 +115,9 @@ object NavigatorPick {
     const val GOOGLE_MAPS = "com.google.android.apps.maps"
     const val DGIS = "ru.dublgis.dgismobile"
     const val WAZE = "com.waze"
+    const val AMAP_AUTO = "com.autonavi.amapauto"
     val KNOWN = listOf(YANDEX_NAVI, YANDEX_MAPS, DGIS,
-        GOOGLE_MAPS, WAZE, "app.organicmaps")
+        GOOGLE_MAPS, WAZE, "app.organicmaps", AMAP_AUTO)
     /** Арабский интерфейс (h1003): только Google Карты и Waze, Яндекса и 2ГИС нет ни в выборе, ни по умолчанию. */
     val KNOWN_AR = listOf(GOOGLE_MAPS, WAZE)
 

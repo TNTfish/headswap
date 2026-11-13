@@ -71,6 +71,8 @@ Headswap 在手机上连接 Android Auto 的“车机服务器”，再把画面
 
 Android Auto 模式显示的是 Android Auto 支持的应用，并非完整手机投屏。应用是否能显示取决于它是否支持 Android Auto。“自带桌面”是另一种模式，需要额外配置，不能据此保证任意应用兼容。
 
+自带桌面的 **设置 → 导航应用** 已增加“高德地图车机版”（`com.autonavi.amapauto`）。需先在手机上安装该应用，随后可选为桌面导航，以应用窗口显示地图。
+
 ### 已连接 CarLife，但 Android Auto 黑屏或断开
 
 先确认 Android Auto 及 Google Play 服务可正常运行，并重新启动车机服务器；再检查数据线、USB 数据接口和 Headswap 的后台电池限制。可从应用内导出日志，提问时附上手机型号、Android 版本、车型年份、车机型号、连接方式和具体症状。

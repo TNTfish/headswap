@@ -43,7 +43,7 @@ object AppLocale {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY, t).apply()
     }
 
-    /** Языки, при которых лаунчер прячет русские сервисы: навигаторы Google Карты и Waze, без Я.Музыки (h1003). */
+    /** Languages that hide Russian services; navigator choices include Google Maps, Waze and Amap Auto. */
     private val GLOBAL_APPS_LANGS = setOf("ar", "fr", "zh")
 
     /** Match both base languages and regional tags saved by the language picker (e.g. zh-CN). */

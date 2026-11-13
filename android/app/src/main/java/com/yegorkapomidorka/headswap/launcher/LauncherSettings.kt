@@ -66,17 +66,13 @@ import kotlinx.coroutines.withContext
 /** Разделы настроек; [COLORS] и [ABOUT] - вложенные страницы «Вида» и «Системы», своей кнопки слева у них нет. */
 enum class SettingsPage { LOOK, NAVIGATOR, MUSIC, HOME, SYSTEM, ABOUT, COLORS }
 
-/** Навигаторы раздела «Навигатор», плитки по две в ряд в порядке макета. */
-private val NAV_TILES = listOf(
+/** Labels only: the language-specific choices come from NavigatorPick. */
+private val NAV_LABELS = mapOf(
     NavigatorPick.YANDEX_NAVI to R.string.l_nav_yandex_navi,
     NavigatorPick.DGIS to R.string.l_nav_2gis,
     NavigatorPick.YANDEX_MAPS to R.string.l_nav_yandex_maps,
     NavigatorPick.GOOGLE_MAPS to R.string.l_nav_google_maps,
     NavigatorPick.AMAP_AUTO to R.string.l_nav_amap_auto,
-)
-/** Арабский интерфейс (h1003): Google Карты и Waze, один ряд. */
-private val NAV_TILES_AR = listOf(
-    NavigatorPick.GOOGLE_MAPS to R.string.l_nav_google_maps,
     NavigatorPick.WAZE to R.string.l_nav_waze,
 )
 
@@ -128,8 +124,8 @@ fun LauncherSettingsScreen() {
             val gap = s.g8
             // портрет: вкладки разделов сверху (T и зазор), сетка рядов - на остаток высоты
             val h = constraints.maxHeight - (if (s.portrait) s.t + gap else 0)
-            // Five navigator choices occupy three rows; reserve room for hints, scale and restart below.
-            val navRows = if (model.arabic) 2 else (NAV_TILES.size + 1) / 2
+            // Keep at least two rows; reserve room for hints, scale and restart below.
+            val navRows = max(2, (NavigatorPick.settingsChoices(model.arabic).size + 1) / 2)
             val rows = if (s.portrait) SettingsGrid.PORTRAIT_ROWS
                 else if (model.settingsPage == SettingsPage.NAVIGATOR) max(SettingsGrid.ROWS, navRows + 3)
                 else SettingsGrid.ROWS
@@ -824,11 +820,11 @@ private fun NavigatorTiles(d: SettingsDims, rowH: Int, modifier: Modifier) {
     val model = LauncherModel
     val installed = model.installedPackages
     Column(modifier, verticalArrangement = Arrangement.spacedBy(m.dp(d.gap))) {
-        for (row in (if (model.arabic) NAV_TILES_AR else NAV_TILES).chunked(2)) {
+        for (row in NavigatorPick.settingsChoices(model.arabic).chunked(2)) {
             Row(Modifier.height(m.dp(rowH)).fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(m.dp(d.gap))) {
-                for ((pkg, res) in row) {
+                for (pkg in row) {
                     val has = pkg in installed
-                    val label = stringResource(res)
+                    val label = stringResource(NAV_LABELS.getValue(pkg))
                     OptionBox(has && model.navigatorPkg == pkg, Modifier.weight(1f).fillMaxHeight().alpha(if (has) 1f else 0.4f),
                         RoundedCornerShape(m.dp(s.radius)), label, unselected = Pal.SURFACE, enabled = has,
                         onTap = { model.setNavigator(pkg) }) {

@@ -380,7 +380,7 @@ class LauncherLogicTest {
         assertTrue(NavigatorPick.shadowWanted(true, NavigatorPick.GOOGLE_MAPS) { true })
     }
 
-    @Test fun arabicNavigatorsGoogleAndWaze() {
+    @Test fun globalNavigatorsKeepExistingDefaults() {
         val all = setOf(NavigatorPick.YANDEX_NAVI, NavigatorPick.DGIS, NavigatorPick.GOOGLE_MAPS, NavigatorPick.WAZE)
         assertEquals(NavigatorPick.GOOGLE_MAPS, NavigatorPick.defaultFor(all, arabic = true))
         assertEquals(NavigatorPick.YANDEX_NAVI, NavigatorPick.defaultFor(all))
@@ -390,6 +390,29 @@ class LauncherLogicTest {
         assertEquals(NavigatorPick.GOOGLE_MAPS, NavigatorPick.effective(NavigatorPick.DGIS, all, arabic = true))
         assertEquals(NavigatorPick.WAZE, NavigatorPick.effective(NavigatorPick.WAZE, all, arabic = true))
         assertEquals(NavigatorPick.DGIS, NavigatorPick.effective(NavigatorPick.DGIS, all))
+    }
+
+    @Test fun chineseAmapAutoIsVisibleSelectableAndSurvivesReload() {
+        for (tag in listOf("zh", "zh-CN", "zh-Hans-CN", "zh-TW")) {
+            val global = com.yegorkapomidorka.headswap.AppLocale.usesGlobalAppsForLanguage(tag)
+            assertTrue(tag, global)
+            assertTrue(tag, NavigatorPick.settingsChoices(global).contains(NavigatorPick.AMAP_AUTO))
+            val installed = setOf(NavigatorPick.GOOGLE_MAPS, NavigatorPick.AMAP_AUTO)
+            assertEquals(tag, NavigatorPick.AMAP_AUTO,
+                NavigatorPick.effective(NavigatorPick.AMAP_AUTO, installed, global))
+            assertEquals(tag, NavigatorPick.AMAP_AUTO,
+                NavigatorPick.defaultFor(setOf(NavigatorPick.AMAP_AUTO), global))
+            assertEquals(tag, NavigatorPick.GOOGLE_MAPS,
+                NavigatorPick.effective(NavigatorPick.AMAP_AUTO, setOf(NavigatorPick.GOOGLE_MAPS), global))
+        }
+    }
+
+    @Test fun everySettingsNavigatorCanBeRestoredInItsLanguageBranch() {
+        for (global in listOf(false, true)) {
+            for (pkg in NavigatorPick.settingsChoices(global)) {
+                assertEquals(pkg, NavigatorPick.effective(pkg, setOf(pkg), global))
+            }
+        }
     }
 
     @Test fun arabicHidesYandexMusic() {

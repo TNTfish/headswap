@@ -66,16 +66,13 @@ import kotlinx.coroutines.withContext
 /** Разделы настроек; [COLORS] и [ABOUT] - вложенные страницы «Вида» и «Системы», своей кнопки слева у них нет. */
 enum class SettingsPage { LOOK, NAVIGATOR, MUSIC, HOME, SYSTEM, ABOUT, COLORS }
 
-/** Навигаторы раздела «Навигатор», плитки по две в ряд в порядке макета. */
-private val NAV_TILES = listOf(
+/** Labels only: the language-specific choices come from NavigatorPick. */
+private val NAV_LABELS = mapOf(
     NavigatorPick.YANDEX_NAVI to R.string.l_nav_yandex_navi,
     NavigatorPick.DGIS to R.string.l_nav_2gis,
     NavigatorPick.YANDEX_MAPS to R.string.l_nav_yandex_maps,
     NavigatorPick.GOOGLE_MAPS to R.string.l_nav_google_maps,
-)
-/** Арабский интерфейс (h1003): Google Карты и Waze, один ряд. */
-private val NAV_TILES_AR = listOf(
-    NavigatorPick.GOOGLE_MAPS to R.string.l_nav_google_maps,
+    NavigatorPick.AMAP_AUTO to R.string.l_nav_amap_auto,
     NavigatorPick.WAZE to R.string.l_nav_waze,
 )
 
@@ -127,7 +124,11 @@ fun LauncherSettingsScreen() {
             val gap = s.g8
             // портрет: вкладки разделов сверху (T и зазор), сетка рядов - на остаток высоты
             val h = constraints.maxHeight - (if (s.portrait) s.t + gap else 0)
-            val rows = if (s.portrait) SettingsGrid.PORTRAIT_ROWS else SettingsGrid.ROWS
+            // Keep at least two rows; reserve room for hints, scale and restart below.
+            val navRows = max(2, (NavigatorPick.settingsChoices(model.arabic).size + 1) / 2)
+            val rows = if (s.portrait) SettingsGrid.PORTRAIT_ROWS
+                else if (model.settingsPage == SettingsPage.NAVIGATOR) max(SettingsGrid.ROWS, navRows + 3)
+                else SettingsGrid.ROWS
             val rowH = SettingsGrid.bottom(0, h, gap, rows) - SettingsGrid.top(0, h, gap, rows)
             val d = SettingsDims(s, rowH)
             // карточка на span рядов: от верха первого ряда до низа последнего - границы совпадают слева и справа
@@ -201,7 +202,7 @@ fun LauncherSettingsScreen() {
                             }
                         }
                         SettingsPage.NAVIGATOR -> {
-                            NavigatorTiles(d, rowH, cell(0, 2).fillMaxWidth())
+                            NavigatorTiles(d, rowH, cell(0, navRows).fillMaxWidth())
                             val navPkg = model.navigatorPkg
                             if (navPkg != null) {
                                 // h800: подсказки на приборке - машинная часть (Яндекс - только с Плюсом) или теневая AA (Google);
@@ -220,12 +221,11 @@ fun LauncherSettingsScreen() {
                                 val subFits = rowH >= ((s.f2 + d.sub) * 1.25).roundToInt() + 4 + 2 * d.padV
                                 // Waze - только окно, подсказок нет вовсе (h1003): тумблер не показываем
                                 val noHints = NavigatorPick.noHints(navPkg)
-                                if (!noHints) SwitchCard(stringResource(R.string.l_nav_hints), hints, d, cell(2).fillMaxWidth(), sub = sub.takeIf { subFits }) {
+                                if (!noHints) SwitchCard(stringResource(R.string.l_nav_hints), hints, d, cell(navRows).fillMaxWidth(), sub = sub.takeIf { subFits }) {
                                     model.chooseNavHints(navPkg, it)
                                 }
-                                var row = if (noHints) 2 else 3
-                                // h1029: свой хост Car App без геолокации «в любом режиме» - у навигатора нет GPS. Рядов пять и все
-                                // заняты (подсказки, масштаб, перезапуск), поэтому, пока разрешения нет, подсказка стоит на месте масштаба
+                                var row = if (noHints) navRows else navRows + 1
+                                // h1029: without background location Car App has no GPS; use the scale row for its permission hint.
                                 val carHost = EmbedHost.nav.carHost
                                 val noBgLocation = carHost && hints && !google && !noHints && !hasBackgroundLocation(navPkg)
                                 // масштаб - dpi своего хоста Car App; навигатору окном и через AA он не нужен
@@ -812,7 +812,7 @@ private fun SwitchCard(label: String, on: Boolean, d: SettingsDims, modifier: Mo
     }
 }
 
-/** «Навигатор»: плитки 2x2 на 2 ряда, круг-иконка и название; не установленный - приглушён и не нажимается. */
+/** Two navigator choices per row; uninstalled apps stay dimmed and cannot be selected. */
 @Composable
 private fun NavigatorTiles(d: SettingsDims, rowH: Int, modifier: Modifier) {
     val m = LocalMetrics.current
@@ -820,11 +820,11 @@ private fun NavigatorTiles(d: SettingsDims, rowH: Int, modifier: Modifier) {
     val model = LauncherModel
     val installed = model.installedPackages
     Column(modifier, verticalArrangement = Arrangement.spacedBy(m.dp(d.gap))) {
-        for (row in (if (model.arabic) NAV_TILES_AR else NAV_TILES).chunked(2)) {
+        for (row in NavigatorPick.settingsChoices(model.arabic).chunked(2)) {
             Row(Modifier.height(m.dp(rowH)).fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(m.dp(d.gap))) {
-                for ((pkg, res) in row) {
+                for (pkg in row) {
                     val has = pkg in installed
-                    val label = stringResource(res)
+                    val label = stringResource(NAV_LABELS.getValue(pkg))
                     OptionBox(has && model.navigatorPkg == pkg, Modifier.weight(1f).fillMaxHeight().alpha(if (has) 1f else 0.4f),
                         RoundedCornerShape(m.dp(s.radius)), label, unselected = Pal.SURFACE, enabled = has,
                         onTap = { model.setNavigator(pkg) }) {
@@ -835,6 +835,7 @@ private fun NavigatorTiles(d: SettingsDims, rowH: Int, modifier: Modifier) {
                         }
                     }
                 }
+                if (row.size == 1) Spacer(Modifier.weight(1f))
             }
         }
     }

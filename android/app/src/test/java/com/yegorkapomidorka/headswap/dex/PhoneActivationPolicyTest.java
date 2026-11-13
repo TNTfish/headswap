@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 
 public final class PhoneActivationPolicyTest {
     private static final String TOKEN = "0123456789abcdef0123456789abcdef";
-    private static final String APP = "com.yegorkapomidorka.headswap";
-    private static final String APK = "/data/app/~~Ab1_-xYz==/com.yegorkapomidorka.headswap-Qw3==/base.apk";
+    private static final String APP = "io.github.tntfish.headswap";
+    private static final String APK = "/data/app/~~Ab1_-xYz==/io.github.tntfish.headswap-Qw3==/base.apk";
     private static final String NONCE = "0123456789abcdef";
 
     private static ManualAccessPolicy.Options options(boolean audio) {
@@ -30,10 +30,10 @@ public final class PhoneActivationPolicyTest {
     @Test public void dispatchDetachesFromTheAdbStreamAndEchoesTheNonce() {
         String[] lines = PhoneActivationPolicy.dispatchCommand(APK, options(false), NONCE).split("\n");
         assertEquals(3, lines.length);
-        assertEquals("rm -f /data/local/tmp/headswap-phone-*.log", lines[0]);
+        assertEquals("rm -f /data/local/tmp/headswap-zh-phone-*.log", lines[0]);
         assertEquals("CLASSPATH='" + APK + "' /system/bin/setsid /system/bin/nohup /system/bin/app_process / "
             + PhoneActivationPolicy.ENTRY + " --package " + APP + " --token " + TOKEN
-            + " </dev/null >/data/local/tmp/headswap-phone-" + NONCE + ".log 2>&1 &", lines[1]);
+            + " </dev/null >/data/local/tmp/headswap-zh-phone-" + NONCE + ".log 2>&1 &", lines[1]);
         assertEquals("echo HEADSWAP_PHONE_DISPATCHED=" + NONCE, lines[2]);
         assertTrue(PhoneActivationPolicy.ENTRY.endsWith(".dex.PhoneActivationLauncher"));
     }
@@ -55,7 +55,7 @@ public final class PhoneActivationPolicyTest {
         String first = PhoneActivationPolicy.newNonce(), second = PhoneActivationPolicy.newNonce();
         assertTrue(PhoneActivationPolicy.isValidNonce(first));
         assertNotEquals(first, second);
-        assertEquals("/data/local/tmp/headswap-phone-" + first + ".log", PhoneActivationPolicy.logPath(first));
+        assertEquals("/data/local/tmp/headswap-zh-phone-" + first + ".log", PhoneActivationPolicy.logPath(first));
     }
 
     @Test public void dispatchIsAcceptedOnlyForThisNonceWithExitZero() {
@@ -108,7 +108,7 @@ public final class PhoneActivationPolicyTest {
         assertTrue(PhoneActivationPolicy.logShowsReady("Доступ…\nHEADSWAP_READY\nГотово."));
         assertFalse(PhoneActivationPolicy.logShowsReady(log));
         assertFalse(PhoneActivationPolicy.logShowsReady(null));
-        assertEquals("tail -c 2000 /data/local/tmp/headswap-phone-" + NONCE + ".log 2>/dev/null", PhoneActivationPolicy.readLogCommand(NONCE));
+        assertEquals("tail -c 2000 /data/local/tmp/headswap-zh-phone-" + NONCE + ".log 2>/dev/null", PhoneActivationPolicy.readLogCommand(NONCE));
     }
 
     @Test public void attemptProgressFollowsAccessAndTheDeadline() {

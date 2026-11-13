@@ -10,6 +10,7 @@ import com.yegorkapomidorka.headswap.dex.DesktopAudioState
 import com.yegorkapomidorka.headswap.dex.DexPrefs
 import com.yegorkapomidorka.headswap.dex.DexState
 import com.yegorkapomidorka.headswap.dex.PhoneActivationState
+import com.yegorkapomidorka.headswap.dex.ShizukuActivation
 import com.yegorkapomidorka.headswap.dex.VdmDesktop
 import java.util.Locale
 
@@ -161,7 +162,8 @@ object DesktopHomeStatus {
             videoRes = (CarLifeState.videoMode ?: aa.videoGeometry.effective(aa.transcode)).outLabel,
             desktopName = desktopName(ctx),
             usbAudio = DesktopAudioState.running && DesktopAudioState.nonSilentBuffers > 0,
-            needUsbDebug = VdmDesktop.usbDebugMissing(ctx),
+            needUsbDebug = VdmDesktop.usbDebugMissing(ctx) &&
+                !(ShizukuActivation.preferred(ctx) && ShizukuActivation.available()),
         )
     }
 

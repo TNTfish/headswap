@@ -250,7 +250,7 @@ class HomeScreen(host: MainActivity) : Screen(host) {
     /** Тот же поток, что у шага ACTIVATE онбординга и блока в «Режиме»: PhoneActivationBlock без показа (embedded), кнопка здесь. */
     private fun activate() {
         val block = activation ?: PhoneActivationBlock(host, embedded = true).also { activation = it }
-        block.activateNow()
+        block.activateNow(preferPreviousBackend = true)
     }
 
     /** Герой-карточка: тон, значок в кружке, заголовок в одну строку, подзаголовок и необязательная строка [note]. */

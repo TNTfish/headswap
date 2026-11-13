@@ -68,6 +68,7 @@ internal object VdmHostRestart {
      */
     fun onHostConnected(context: Context?) {
         val ctx = context?.applicationContext ?: return
+        if (ShizukuActivation.preferred(ctx)) return
         if (!pinPort || tcpipTried.get() || tcpPortProperty() == FIXED_TCP_PORT.toString()) return
         if (busy.get()) return // удачный перезапуск сам вызовет pinViaAdbd
         if (!PhoneActivationState(ctx).paired || !PhoneAdb.hasIdentity(ctx)) return
@@ -82,6 +83,7 @@ internal object VdmHostRestart {
     private fun blocker(ctx: Context): String? = when {
         !VdmDesktop.supported -> "Android ниже 17"
         !DelegatedDesktopAccess.isReady(ctx) -> "активация закончилась"
+        ShizukuActivation.preferred(ctx) -> if (ShizukuActivation.available()) null else "Shizuku недоступен"
         !PhoneActivationState(ctx).paired || !PhoneAdb.hasIdentity(ctx) -> "активация не с телефона (нет пары adb)"
         Settings.Global.getInt(ctx.contentResolver, "adb_wifi_enabled", 0) != 1 &&
             !(pinPort && tcpPortProperty() == FIXED_TCP_PORT.toString()) -> "отладка по Wi-Fi выключена, порт $FIXED_TCP_PORT не закреплён"
@@ -117,6 +119,7 @@ internal object VdmHostRestart {
      * через Wi-Fi). Делаем только при Wi-Fi и один раз за процесс, чтобы не зациклиться, если свойство не держится.
      */
     private fun pinViaAdbd(ctx: Context) {
+        if (ShizukuActivation.preferred(ctx)) return
         if (!pinPort) return
         if (tcpPortProperty() == FIXED_TCP_PORT.toString()) return
         if (!PhoneAdb.wifiAvailable(ctx)) return
@@ -142,6 +145,11 @@ internal object VdmHostRestart {
      * vdm4 у h821 и SM-S942B: свойство не прочиталось, mDNS за 12 с ничего не нашёл - всё пишем в лог.
      */
     private fun launch(ctx: Context) {
+        if (ShizukuActivation.preferred(ctx)) {
+            check(ShizukuActivation.restartHost(ctx)) { "Shizuku host dispatch unconfirmed" }
+            log("хост запущен заново через Shizuku")
+            return
+        }
         val saved = PhoneActivationState(ctx).connectPort
         if (saved in 1..65535) {
             try { return start(ctx, AdbEndpoint(LocalAddressPolicy.LOOPBACK, saved)) }

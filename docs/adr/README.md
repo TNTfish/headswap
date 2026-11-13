@@ -31,6 +31,7 @@
 
 | № | Решение | Статус |
 |---|---------|--------|
+| 0040 | [Shizuku desktop activation](0040-shizuku-desktop-activation.md) | accepted in fork; testing |
 | 0039 | [中文 Fork 的签名与更新来源](0039-fork-release-signing.md) | 采用 |
 | 0001 | [Мост — клиент сервера ГУ Android Auto на 127.0.0.1:5277, без интента в Gearhead](0001-aa-client-of-hu-server-5277.md) | принято |
 | 0002 | [Отказ от службы спецвозможностей: сервер ГУ пользователь включает вручную](0002-no-accessibility-service.md) | принято |
@@ -63,3 +64,5 @@
 | 0032 | [Без строки статуса уведомления висят чёлкой, язычок и шторка растут из неё](0032-hidden-status-bar-notch.md) | принято |
 | 0033 | [На Android 17 экран рабочего стола держит shell-хост VirtualDevice; требуется отладка по USB](0033-android17-vdm-shell-host.md) | принято |
 | 0037 | [Шайба ГУ во встроенное окно на всю область идёт стрелками DPAD](0037-knob-into-windowed-apps.md) | принято |
+| 0041 | [中文 Fork 使用独立包名与青蓝色图标](0041-fork-coexistence.md) | 采用 |
+| 0042 | [Shizuku 激活前检查其他版本的桌面占用](0042-desktop-activation-conflict.md) | 采用 |

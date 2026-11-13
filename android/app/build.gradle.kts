@@ -18,7 +18,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.yegorkapomidorka.headswap"
+        applicationId = "io.github.tntfish.headswap"
         minSdk = 29
         targetSdk = 37
         versionCode = 74
@@ -112,6 +112,8 @@ androidComponents {
 }
 
 dependencies {
+    implementation("dev.rikka.shizuku:api:13.1.5")
+    implementation("dev.rikka.shizuku:provider:13.1.5")
     implementation("androidx.annotation:annotation:1.8.1")
     // активация Headswap Desktop с самого телефона: пейринг и подключение к своему adbd по беспроводной отладке
     implementation("com.flyfishxu:kadb:2.1.5")

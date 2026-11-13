@@ -56,7 +56,7 @@ public final class ManualAccessLauncher {
             check(Process.myUid() == 2000, "Запустите команду из обычного ADB shell (UID 2000), без root.");
             check(Build.VERSION.SDK_INT >= 33, "Нужен Android 13 или новее.");
             // A shell-owned, non-symlink lock serializes two manual invocations. No keys or IDs are stored.
-            try (FileChannel channel = FileChannel.open(Paths.get("/data/local/tmp/headswap-manual-access.lock"),
+            try (FileChannel channel = FileChannel.open(Paths.get("/data/local/tmp/headswap-zh-manual-access.lock"),
                     StandardOpenOption.CREATE, StandardOpenOption.WRITE, LinkOption.NOFOLLOW_LINKS);
                  FileLock lock = channel.tryLock()) {
                 check(lock != null, "Другая ручная активация ещё выполняется. Дождитесь её завершения.");

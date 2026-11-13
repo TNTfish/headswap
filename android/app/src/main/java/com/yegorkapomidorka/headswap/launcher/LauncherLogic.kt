@@ -115,10 +115,15 @@ object NavigatorPick {
     const val GOOGLE_MAPS = "com.google.android.apps.maps"
     const val DGIS = "ru.dublgis.dgismobile"
     const val WAZE = "com.waze"
+    const val AMAP_AUTO = "com.autonavi.amapauto"
     val KNOWN = listOf(YANDEX_NAVI, YANDEX_MAPS, DGIS,
-        GOOGLE_MAPS, WAZE, "app.organicmaps")
-    /** Арабский интерфейс (h1003): только Google Карты и Waze, Яндекса и 2ГИС нет ни в выборе, ни по умолчанию. */
-    val KNOWN_AR = listOf(GOOGLE_MAPS, WAZE)
+        GOOGLE_MAPS, WAZE, "app.organicmaps", AMAP_AUTO)
+    /** Global app list (including Chinese): Google Maps, Waze and Amap Auto. */
+    val KNOWN_AR = listOf(GOOGLE_MAPS, WAZE, AMAP_AUTO)
+
+    /** The settings UI and saved/default selection must use the same language branch. */
+    fun settingsChoices(arabic: Boolean): List<String> = if (arabic) KNOWN_AR else
+        listOf(YANDEX_NAVI, DGIS, YANDEX_MAPS, GOOGLE_MAPS, AMAP_AUTO)
 
     fun known(arabic: Boolean): List<String> = if (arabic) KNOWN_AR else KNOWN
 

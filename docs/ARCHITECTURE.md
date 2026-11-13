@@ -37,6 +37,24 @@
 
 ## Пакеты
 
+Chinese fork coexistence (ADR 0041): installed applicationId is `io.github.tntfish.headswap`, while
+the code/resource namespace stays `com.yegorkapomidorka.headswap`. Instrumentation targets, provider
+authorities, desktop task affinity and activation commands use the installed applicationId; class
+names retain the code namespace. Each install has its own settings, UID and Shizuku authorization.
+The fork requests but does not declare `android.car.permission.TEMPLATE_RENDERER`: upstream can own
+the normal permission without a duplicate-declaration install failure. Without an owner, restrictive
+Car App hosts can fall back to ordinary app windows (ADR 0022).
+
+Chinese fork desktop activation (ADR 0040): `dex/ShizukuActivation` coordinates explicit authorization and
+bounded UserService binding. `ShizukuActivationService` runs as real shell UID 2000 and exposes only the
+existing activation/log/VDM-restart operations through `IShizukuActivation`; it accepts only its own app UID.
+`PhoneActivationState` records the backend with the nonce before process replacement. Both backends reuse
+`PhoneActivationPolicy`/`PhoneActivationLauncher` and the same token-checked instrumentation. Readiness is
+always `DelegatedDesktopAccess`, never a Shizuku acknowledgment. `VdmHostRestart` routes recovery through the
+recorded backend. UI strings are in all five locales; the provider authority uses the runtime applicationId.
+Before dispatch, the restricted helper inspects active instrumentation component headers (ADR 0042).
+Another package blocks activation with a localized message before the app is restarted; no other app is stopped.
+
 | Где | Что |
 |---|---|
 | `$P/` (корень) | Сторона CarLife и сервис. `BridgeService` — оркестратор. `CarLifeSession` — одна сессия с ГУ. `Handshake`, `HuAuth` — рукопожатие и HU_AUTHEN. `Protocol.kt` (`Ch`, `Msg`, `Wire`, `FrameParser`), `Proto.kt` (свой protobuf). `VideoSource` — заглушка до прихода AA. `AppLog`, `CrashLog`. |

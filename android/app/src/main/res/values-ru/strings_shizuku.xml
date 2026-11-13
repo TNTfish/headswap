@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shizuku_activate">Активировать через Shizuku</string>
+    <string name="shizuku_hint">Запустите Shizuku через беспроводную отладку или компьютер, затем разрешите доступ Headswap кнопкой выше. Код сопряжения в Headswap не нужен. После перезагрузки телефона запустите Shizuku снова. Можно также использовать беспроводную отладку ниже.</string>
+    <string name="shizuku_wait_permission">Ожидание разрешения Shizuku…</string>
+    <string name="shizuku_not_running">Сначала запустите Shizuku, затем попробуйте снова.</string>
+    <string name="shizuku_permission_denied">Разрешите Headswap в Shizuku → Авторизованные приложения и повторите попытку.</string>
+    <string name="shizuku_update_required">Обновите Shizuku до версии 13 или новее.</string>
+    <string name="shizuku_adb_required">Запустите Shizuku через беспроводную отладку или компьютер (режим ADB). Режим Root пока не поддерживается.</string>
+    <string name="shizuku_android_required">Для активации рабочего стола нужен Android 13 или новее.</string>
+    <string name="shizuku_activation_failed">Shizuku не подтвердил активацию. Проверьте, что Shizuku запущен и доступ разрешён, затем повторите попытку или используйте беспроводную отладку.</string>
+    <string name="shizuku_activation_conflict">Доступ рабочего стола уже занят приложением %1$s. Принудительно остановите его в настройках системы и повторите. Одновременно активной может быть только одна версия.</string>
+</resources>

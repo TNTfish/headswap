@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shizuku_activate">Activate with Shizuku</string>
+    <string name="shizuku_hint">Start Shizuku using wireless debugging or a computer, then tap above to authorize Headswap. No pairing code is needed in Headswap. Start Shizuku again after rebooting your phone. You can also use wireless debugging below.</string>
+    <string name="shizuku_wait_permission">Waiting for Shizuku authorization…</string>
+    <string name="shizuku_not_running">Start Shizuku first, then try again.</string>
+    <string name="shizuku_permission_denied">Allow Headswap in Shizuku → Authorized applications, then try again.</string>
+    <string name="shizuku_update_required">Update Shizuku to version 13 or later.</string>
+    <string name="shizuku_adb_required">Start Shizuku using wireless debugging or a computer (ADB mode). Root mode is not supported yet.</string>
+    <string name="shizuku_android_required">Desktop activation requires Android 13 or later.</string>
+    <string name="shizuku_activation_failed">Shizuku could not confirm desktop activation. Check that Shizuku is running and authorized, then retry or use wireless debugging.</string>
+    <string name="shizuku_activation_conflict">Another desktop activation is running (%1$s). In system App info, force stop that app, then retry. Only one version can hold desktop activation at a time.</string>
+</resources>

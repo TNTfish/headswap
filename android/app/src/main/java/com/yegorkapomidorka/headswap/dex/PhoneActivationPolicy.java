@@ -18,9 +18,9 @@ public final class PhoneActivationPolicy {
     /** Dispatch to proof of access: the launcher waits up to 30 s for READY and 6 s for survival, then the app restarts. */
     public static final long DEADLINE_MS = 60_000;
     public static final String PREFLIGHT = "test -x /system/bin/setsid && test -x /system/bin/nohup && test -x /system/bin/app_process";
-    public static final String REMOVE_LOGS = "rm -f " + "/data/local/tmp/headswap-phone-*.log";
+    public static final String REMOVE_LOGS = "rm -f " + "/data/local/tmp/headswap-zh-phone-*.log";
 
-    private static final String LOG_PREFIX = "/data/local/tmp/headswap-phone-";
+    private static final String LOG_PREFIX = "/data/local/tmp/headswap-zh-phone-";
     private static final Pattern NONCE = Pattern.compile("[0-9a-f]{16}");
     private static final Pattern CODE = Pattern.compile("[0-9]{6}");
     private static final int LOG_LIMIT = 2000;

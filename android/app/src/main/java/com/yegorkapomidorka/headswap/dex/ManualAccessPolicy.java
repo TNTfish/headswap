@@ -99,11 +99,12 @@ public final class ManualAccessPolicy {
         return "echo HEADSWAP_ACCESS_LAUNCHER_PID=$$; exec am " + String.join(" ", arguments(options));
     }
 
-    /** `am start` arguments that open the app's own launcher activity, resolved by the installed package. */
+    /** Resolve the installed package with the code namespace's activity, including coexistence builds. */
     public static List<String> openAppArguments(String packageName) {
         requirePackage(packageName);
         return Collections.unmodifiableList(Arrays.asList("start", "--user", "current", "--display", "0",
-            "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-p", packageName));
+            "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n",
+            packageName + "/com.yegorkapomidorka.headswap.MainActivity"));
     }
 
     // --- activation token: the app generates and stores it, the PC command carries it, the instrumentation checks it ---

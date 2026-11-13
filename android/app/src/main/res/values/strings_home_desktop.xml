@@ -15,8 +15,8 @@
     <string name="home_desk_title_activate">Activate Headswap</string>
     <string name="home_desk_title_error">The home screen did not start</string>
 
-    <string name="home_desk_sub_activate">A one-time activation via “Wireless debugging” is needed.</string>
-    <string name="home_desk_sub_activate_paired">The activation is lost after a phone restart. Repeat it via “Wireless debugging”: half a minute.</string>
+    <string name="home_desk_sub_activate">Activate the desktop with Shizuku or wireless debugging.</string>
+    <string name="home_desk_sub_activate_paired">Activate again after restarting your phone, using Shizuku or wireless debugging.</string>
     <string name="home_desk_sub_ok">%1$s on the car screen. You can put the phone away.</string>
     <string name="home_desk_sub_starting">Starting the home screen.</string>
 

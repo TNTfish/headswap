@@ -60,11 +60,9 @@
     <!-- обновление из приложения: установка скачанного с GitHub APK через PackageInstaller -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
-    <!-- свой хост Car App (ADR 0022): HostValidator из Car App Library пускает хост с выданным TEMPLATE_RENDERER.
-         На телефоне его никто не объявляет, объявляем сами (normal, выдаётся при установке) - так нас пускает
-         Яндекс Навигатор, у которого в списке хостов только Android Auto. -->
-
-    <permission android:name="android.car.permission.TEMPLATE_RENDERER" android:protectionLevel="normal" />
+    <!-- Request the Car App host permission (ADR 0022), but let upstream own its declaration.
+         A second declaration with the fork's signature prevents coexistence (ADR 0041).
+         Without a permission owner, restrictive navigators use the existing window fallback. -->
     <uses-permission android:name="android.car.permission.TEMPLATE_RENDERER" />
 
     <!-- без queries на API 30+ пакет Android Auto не виден (проверка установки, запуск настроек) -->
@@ -124,6 +122,15 @@
         android:name=".HeadswapApp"
         android:enableOnBackInvokedCallback="false"
         android:theme="@style/Theme.Headswap">
+
+        <!-- Receives the Shizuku binder; the manager protects access with its runtime authorization. -->
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:multiprocess="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
         <activity
             android:name=".MainActivity"

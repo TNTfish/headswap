@@ -415,6 +415,33 @@ class LauncherLogicTest {
         }
     }
 
+    @Test fun chineseAmapMobileIsSelectableAndSurvivesReload() {
+        for (tag in listOf("zh", "zh-CN", "zh-Hans-CN", "zh-TW")) {
+            val global = com.yegorkapomidorka.headswap.AppLocale.usesGlobalAppsForLanguage(tag)
+            assertTrue(tag, NavigatorPick.settingsChoices(global).contains(NavigatorPick.AMAP))
+            val installed = setOf(NavigatorPick.GOOGLE_MAPS, NavigatorPick.AMAP_AUTO, NavigatorPick.AMAP)
+            assertEquals(tag, NavigatorPick.AMAP,
+                NavigatorPick.effective(NavigatorPick.AMAP, installed, global))
+            assertEquals(tag, NavigatorPick.AMAP,
+                NavigatorPick.defaultFor(setOf(NavigatorPick.AMAP), global))
+            assertEquals(tag, NavigatorPick.AMAP_AUTO,
+                NavigatorPick.effective(NavigatorPick.AMAP, setOf(NavigatorPick.AMAP_AUTO), global))
+        }
+    }
+
+    @Test fun amapEditionsRemainIndependentAndPreserveExistingDefaults() {
+        for (global in listOf(false, true)) {
+            val choices = NavigatorPick.settingsChoices(global)
+            assertEquals(1, choices.count { it == NavigatorPick.AMAP })
+            assertEquals(1, choices.count { it == NavigatorPick.AMAP_AUTO })
+            val both = setOf(NavigatorPick.AMAP, NavigatorPick.AMAP_AUTO)
+            assertEquals(NavigatorPick.AMAP_AUTO, NavigatorPick.defaultFor(both, global))
+            assertEquals(NavigatorPick.AMAP, NavigatorPick.effective(NavigatorPick.AMAP, both, global))
+            assertEquals(NavigatorPick.AMAP_AUTO, NavigatorPick.effective(NavigatorPick.AMAP_AUTO, both, global))
+            assertNull(NavigatorPick.effective(NavigatorPick.AMAP, emptySet(), global))
+        }
+    }
+
     @Test fun arabicHidesYandexMusic() {
         val ar = PlayerChip.online(true)
         val inst = setOf(PlayerChip.YANDEX, PlayerChip.VK)

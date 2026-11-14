@@ -73,6 +73,7 @@ private val NAV_LABELS = mapOf(
     NavigatorPick.YANDEX_MAPS to R.string.l_nav_yandex_maps,
     NavigatorPick.GOOGLE_MAPS to R.string.l_nav_google_maps,
     NavigatorPick.AMAP_AUTO to R.string.l_nav_amap_auto,
+    NavigatorPick.AMAP to R.string.l_nav_amap,
     NavigatorPick.WAZE to R.string.l_nav_waze,
 )
 
